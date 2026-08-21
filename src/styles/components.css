@@ -530,7 +530,7 @@
 }
 
 .color-swatch__preview--img {
-  background-image: url('../assets/background.jpg');
+  background-image: url('/assets/background.jpg');
   background-size: cover;
   background-position: center;
 }

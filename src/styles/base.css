@@ -120,7 +120,7 @@ body {
   left: -12px;
   right: -12px;
   bottom: -12px;
-  background-image: url('../assets/background.jpg');
+  background-image: url('/assets/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

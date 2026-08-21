@@ -7,6 +7,7 @@
    Entry point: bootstraps every module on DOMContentLoaded, mirroring the
    exact same single-listener sequence the legacy app.js used to run.
    -------------------------------------------------------------------------- */
+import './styles/main.css';
 import { initPageViewNavigation } from './modules/navigation.js';
 import { initDashboardInteractivity } from './modules/dashboard.js';
 import { initSidebarAccordion, initSidebarCollapse } from './modules/sidebar.js';
