@@ -1,7 +1,9 @@
+import { showToast } from '../core/toast.js';
+
 /* --------------------------------------------------------------------------
-   4. IN-PAGE BACKGROUND CUSTOMIZER STUDIO (#bg-customizer-card) WITH LOCALSTORAGE
+   IN-PAGE BACKGROUND CUSTOMIZER STUDIO (#bg-customizer-card) WITH LOCALSTORAGE
    -------------------------------------------------------------------------- */
-function initInPageBackgroundStudio() {
+export function initInPageBackgroundStudio() {
   const bgLayer = document.getElementById('bg-layer');
   const fileInput = document.getElementById('inpage-bg-file');
 

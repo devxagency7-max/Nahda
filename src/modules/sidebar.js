@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------
-   1. SIDEBAR ACCORDION ENGINE
+   SIDEBAR ACCORDION ENGINE
    -------------------------------------------------------------------------- */
-function initSidebarAccordion() {
+export function initSidebarAccordion() {
   const accordionHeaders = document.querySelectorAll('.accordion-header');
 
   // Initialize initially open accordions
@@ -47,9 +47,9 @@ function initSidebarAccordion() {
 }
 
 /* --------------------------------------------------------------------------
-   2. SIDEBAR COLLAPSE TOGGLE
+   SIDEBAR COLLAPSE TOGGLE
    -------------------------------------------------------------------------- */
-function initSidebarCollapse() {
+export function initSidebarCollapse() {
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.querySelector('.sidebar__toggle');
   const sidebarNav = document.querySelector('.sidebar__nav');

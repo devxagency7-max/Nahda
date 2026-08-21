@@ -1,14 +1,15 @@
+import { showToast } from '../core/toast.js';
+import { onWorkflowRecalc } from '../core/state.js';
+
 /* --------------------------------------------------------------------------
-   3. WORKFLOW CONNECTED TABS NAVIGATION (10 STEPS LIVE PERCENTAGE ENGINE)
+   WORKFLOW CONNECTED TABS NAVIGATION (10 STEPS LIVE PERCENTAGE ENGINE)
    -------------------------------------------------------------------------- */
-function initWorkflowTabs() {
+export function initWorkflowTabs() {
   const toggleBtn = document.getElementById('workflow-toggle-btn');
   const toggleText = document.getElementById('workflow-toggle-text');
   const roadWrapper = document.getElementById('workflow-road-wrapper');
   const workflowCard = document.getElementById('workflow-nav-card');
   const stepNodes = document.querySelectorAll('.workflow-tab');
-  const progressPath = document.getElementById('road-path-progress');
-  const basePath = document.querySelector('.road-path-base');
 
   // Toggle Collapse / Expand
   if (toggleBtn && roadWrapper) {
@@ -121,11 +122,27 @@ function initWorkflowTabs() {
     // Road line is purely decorative and static - no dynamic drawing
   }
 
-  // Attach live listeners on inputs
-  document.querySelectorAll('.form-input, .form-select').forEach(input => {
-    input.addEventListener('input', calculatePercentages);
-    input.addEventListener('change', calculatePercentages);
-  });
+  // Attach live listeners via delegation on the personal-data view (verified
+  // equivalent: no code ever dynamically creates a new .form-input/.form-select
+  // element — every such element is static HTML, only shown/hidden — so a
+  // delegated input/change listener fires for exactly the same element set
+  // as the old per-element querySelectorAll('.form-input, .form-select') binding)
+  const personalDataView = document.getElementById('view-personal-data');
+  function handleDelegatedRecalc(e) {
+    if (e.target.matches('.form-input, .form-select')) {
+      calculatePercentages();
+    }
+  }
+  if (personalDataView) {
+    personalDataView.addEventListener('input', handleDelegatedRecalc);
+    personalDataView.addEventListener('change', handleDelegatedRecalc);
+  } else {
+    // Fallback: preserve old behavior exactly if the view container is missing
+    document.querySelectorAll('.form-input, .form-select').forEach(input => {
+      input.addEventListener('input', calculatePercentages);
+      input.addEventListener('change', calculatePercentages);
+    });
+  }
 
   function activateStep(step, scroll = true) {
     stepNodes.forEach(n => n.classList.remove('workflow-tab--active'));
@@ -167,5 +184,5 @@ function initWorkflowTabs() {
 
   // Initial calculation
   calculatePercentages();
-  window.updateWorkflowPercentages = calculatePercentages;
+  onWorkflowRecalc(calculatePercentages);
 }

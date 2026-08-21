@@ -1,7 +1,9 @@
+import { showToast } from '../core/toast.js';
+
 /* --------------------------------------------------------------------------
-   5. FILE UPLOAD DROPZONE INTERACTIVITY
+   FILE UPLOAD DROPZONE INTERACTIVITY
    -------------------------------------------------------------------------- */
-function initFileUpload() {
+export function initFileUpload() {
   const uploadArea = document.querySelector('.form-upload');
   const fileInput = document.getElementById('file-input');
 
@@ -49,9 +51,9 @@ function handleFileSelected(fileName) {
 }
 
 /* --------------------------------------------------------------------------
-   6. FORM ACTIONS & TOAST MESSAGING SYSTEM
+   FORM ACTIONS & TOAST MESSAGING SYSTEM
    -------------------------------------------------------------------------- */
-function initFormInteractivity() {
+export function initFormInteractivity() {
   const saveBtn = document.querySelector('.btn--primary');
   if (saveBtn) {
     saveBtn.addEventListener('click', (e) => {

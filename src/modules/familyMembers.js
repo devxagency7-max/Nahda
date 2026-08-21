@@ -1,7 +1,11 @@
+import { showToast } from '../core/toast.js';
+import { triggerWorkflowRecalc } from '../core/state.js';
+import { BENI_SUEF_DATA } from '../data/beniSuefData.js';
+
 /* --------------------------------------------------------------------------
-   7. DYNAMIC FAMILY MEMBERS MANAGER (إضافة فرد تابع لرب الأسرة)
+   DYNAMIC FAMILY MEMBERS MANAGER (إضافة فرد تابع لرب الأسرة)
    -------------------------------------------------------------------------- */
-function initFamilyMembersManager() {
+export function initFamilyMembersManager() {
   const btnOpenModal = document.getElementById('btn-open-add-member');
   const btnCloseModal = document.getElementById('btn-close-member-modal');
   const btnCancelModal = document.getElementById('btn-cancel-add-member');
@@ -33,9 +37,7 @@ function initFamilyMembersManager() {
     if (emptyState) {
       emptyState.style.display = total === 0 ? 'block' : 'none';
     }
-    if (typeof window.updateWorkflowPercentages === 'function') {
-      window.updateWorkflowPercentages();
-    }
+    triggerWorkflowRecalc();
   }
 
   // Grade options mapping per educational stage
@@ -50,12 +52,12 @@ function initFamilyMembersManager() {
 
   function handleStageChange(selectedStage, savedGrade = '', savedUni = '') {
     const uniLabel = document.getElementById('student-uni-label');
-    
+
     if (gradeOptionsMap[selectedStage]) {
       if (gradeGroup) gradeGroup.style.display = 'block';
       if (universityGroup) universityGroup.style.display = 'none';
       if (universityInput) universityInput.value = '';
-      
+
       if (gradeSelect) {
         gradeSelect.innerHTML = '<option value="" selected disabled>اختر الصف / المستوى...</option>';
         gradeOptionsMap[selectedStage].forEach(g => {
@@ -277,7 +279,7 @@ function initFamilyMembersManager() {
             <span class="badge badge--primary" style="font-size: 11px;">${relation}</span>
             ${age ? `<span class="badge badge--secondary" style="font-size: 11px;">السن: ${age} سنة</span>` : ''}
           </div>
-          
+
           <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--text-secondary);">
             ${idNum ? `<div>🪪 <strong>الرقم القومي:</strong> <span style="font-family: monospace; font-weight: 700;">${idNum}</span></div>` : ''}
             <div>🏫 <strong>التعليم:</strong> ${finalEduDisplay}</div>
@@ -412,67 +414,9 @@ function initFamilyMembersManager() {
 }
 
 /* --------------------------------------------------------------------------
-   8. DYNAMIC LOCATION & BENI SUEF VILLAGES CASCADE
+   DYNAMIC LOCATION & BENI SUEF VILLAGES CASCADE
    -------------------------------------------------------------------------- */
-const BENI_SUEF_DATA = {
-  "بني سويف": [
-    "إبشنا", "الحكامنة", "الحلابية", "الدوالطة", "الدوية", "الكوم الأحمر", 
-    "أهناسيا الخضراء", "إهوه", "باروط", "باها العجوز", "بلفيا", "بني بخيت", 
-    "بني حمد", "بني رضوان", "بني سليمان الشرقية", "بني عفان", "بني هارون", 
-    "بياض العرب", "تزمنت الشرقية", "تزمنت الغربية", "حاجر بني سليمان", "دموشيا", 
-    "رياض", "سنور", "شريف", "منشأة حيدر يكن", "منشأة عاصم", "منقريش", 
-    "نزلة أبو سليم", "نزلة السعادنة", "نزلة معارك", "نعيم", "الزرابي", "تل أبو ناروز"
-  ],
-  "الواسطى": [
-    "أبو صير الملق", "أبويط", "أطواب", "أنفسط", "إفوة", "الحومة", "الديابية", 
-    "المصلوب", "الميمون", "النواميس", "الهرم", "بني حدير", "بني سليمان", 
-    "بني غنيم", "بني محمد", "بني نصير", "جزيرة المساعدة", "جزيرة النور", 
-    "زاوية المصلوب", "صفط الشرقية", "صفط الغربية", "عطف إفوة", "قمن العروس", 
-    "كفر أبجيج", "كفر بني عثمان", "كوم أبو راضي", "كوم أدريجة", "معصرة أبو صير", 
-    "منشأة أبو صير", "میدوم", "نزلة الجنيدي", "ونا القس"
-  ],
-  "ناصر": [
-    "أشمنت", "البرج", "الحرجة", "الحمام", "الرياض", "الزيتون", "المنصورة", 
-    "بني خليفة", "بني عدي", "بهبشين", "جزيرة أبو صالح", "دلاص", "دنديل", 
-    "طحا بوش", "طنسا الملق", "غيط البحري", "كفر الجزيرة", "كوم أبو خلاد", 
-    "منشأة الشركة", "منشأة هديب"
-  ],
-  "إهناسيا": [
-    "أدراسية", "البهسمون", "الشوبك", "العواونة", "المسيد الأبيض", "النويرة", 
-    "براوة الوقف", "بني هاني", "بهنموه", "دير براوة", "سدمنت الجبل", "شرهي", 
-    "طما فيوم", "قاي", "قلة", "قلها", "كفر أبو شهبة", "كوم الرمل البحري", 
-    "معصرة نعسان", "منشأة الأمراء", "منشأة البديني", "منشأة الحاج", "منشأة طاهر", 
-    "منشأة عبد الصمد", "منشأة كساب", "منهرة", "منهرو", "منيل غيضان", "منيل هاني", 
-    "ميانة", "نزلة المشارقة", "نزلة المماليك", "نزلة خلف", "نزلة شاويش", "ننا"
-  ],
-  "ببا": [
-    "أبو شربان", "أم الجنازير", "البرانقة", "البكرية", "الجزيرة الشرقية", 
-    "السلطاني", "الشهيد حسن علام", "الضباعنة", "الفقاعي", "الملاحية", 
-    "الملاحية البحرية", "بني أحمد", "بني خليل", "بني عقبة", "بني عوض", 
-    "بني قاسم", "بني مؤمنة", "بني ماضي", "بني محمد الشرقية", "بني هاشم", 
-    "جبل النور", "جزيرة الفقاعي", "جزيرة ببا", "رزقة المشارقة", "زاوية الناوية", 
-    "سدس الأمراء", "صفط راشين", "طحا لبيشة", "طرشوب", "طنسا بني مالو", "طوة", 
-    "غياضة الشرقية", "غياضة الغربية", "فزارة", "قنبش الحمراء", "كفر جمعة", 
-    "كفر منصور", "كفر ناصر", "منشأة أبو دخان", "منية الجيد", "منيل موسى", 
-    "نزلة الزاوية", "نزلة الشريف", "نزلة علي كيلاني", "هربشنت", "هلية"
-  ],
-  "سمسطا": [
-    "الشنطور", "العساكرة", "القصبة", "المحمودية", "بدهل", "بني حلة", 
-    "بني محمد راشد", "دشاشة", "دشطوط", "سربو", "عزبة الشنطور", "عزبة قفطان", 
-    "كفر الشيخ عابد", "كفر بني علي", "كوم الرمل القبلي", "كوم النور", "مزورة", 
-    "منشأة أبو مليح", "منشأة سليمان", "نزلة الديب", "نزلة سعيد"
-  ],
-  "الفشن": [
-    "أبسوج", "أقفهص", "البرقي", "الجفادون", "الجمهود", "الحيبة", 
-    "الزاوية الخضراء", "الشقر", "الفنت", "الفنت الغربية", "القضابي", 
-    "القليعة", "الكنيسة", "بسفا", "بني صالح", "بني منين", "تلت", 
-    "جزيرة الوكلية", "دلهانس", "شنري", "صالح", "صفط الخرسة", "صفط العرفا", 
-    "صفط النور", "طلا", "عزبة البنك", "عزبة تلت", "كفر درويش", "كفر منسابة", 
-    "منشأة السادات", "منشأة عمرو", "نزلة أقفهص", "نزلة البرقي", "نزلة حنا حنا"
-  ]
-};
-
-function initLocationCascade() {
+export function initLocationCascade() {
   const districtEl = document.getElementById('district');
   const villageEl = document.getElementById('village');
 
@@ -512,7 +456,7 @@ function initLocationCascade() {
         Object.keys(BENI_SUEF_DATA).forEach(center => {
           const group = document.createElement('optgroup');
           group.label = `مركز ومدن ${center}`;
-          
+
           const centerOpt = document.createElement('option');
           centerOpt.value = `مدينة / مركز ${center}`;
           centerOpt.textContent = `🏢 مدينة / مركز ${center} (المدينة نفسها)`;

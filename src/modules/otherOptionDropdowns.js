@@ -1,12 +1,12 @@
 /* --------------------------------------------------------------------------
-   9. GENERIC "أخرى" DROPDOWN HANDLER
+   GENERIC "أخرى" DROPDOWN HANDLER
    Any <select> with a matching .other-input-field[data-for="<select-id>"]
    shows that text field when "أخرى" is selected. Whatever the user types
    is written back into the "أخرى" option's text/value live, so any code
    elsewhere that reads select.value or the selected option's text picks
    up the typed value automatically — no other file needs to know about it.
    -------------------------------------------------------------------------- */
-function initOtherOptionDropdowns() {
+export function initOtherOptionDropdowns() {
   const otherInputs = document.querySelectorAll('.other-input-field[data-for]');
 
   otherInputs.forEach(otherInput => {

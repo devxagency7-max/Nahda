@@ -1,7 +1,9 @@
+import { showToast } from '../core/toast.js';
+
 /* --------------------------------------------------------------------------
-   0. PAGE VIEW SWITCHER ENGINE WITH LOCALSTORAGE PERSISTENCE
+   PAGE VIEW SWITCHER ENGINE WITH LOCALSTORAGE PERSISTENCE
    -------------------------------------------------------------------------- */
-function initPageViewNavigation() {
+export function initPageViewNavigation() {
   const navBgLink = document.getElementById('nav-bg-card-link');
   const btnBack = document.getElementById('btn-back-to-personal-data');
   const viewDashboard = document.getElementById('view-dashboard');
@@ -10,8 +12,7 @@ function initPageViewNavigation() {
   const breadcrumb = document.querySelector('.breadcrumb');
 
   function toast(msg) {
-    // Use global showToast if available, else silently skip
-    if (typeof showToast === 'function') showToast(msg);
+    showToast(msg);
   }
 
   function switchView(viewName, saveToStorage = true) {
@@ -112,4 +113,6 @@ function initPageViewNavigation() {
   // Restore saved view on page load (silently, no toast)
   const savedView = localStorage.getItem('nahda_current_view') || 'dashboard';
   switchView(savedView, false);
+
+  return switchView;
 }

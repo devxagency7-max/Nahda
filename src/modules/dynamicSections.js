@@ -1,15 +1,12 @@
+import { showToast } from '../core/toast.js';
+import { triggerWorkflowRecalc } from '../core/state.js';
+
 /* --------------------------------------------------------------------------
    DYNAMIC SECTIONS ENGINE (STAGE 6 FINANCIAL, STAGE 7 CHIPS, STAGE 8 NEEDS)
    -------------------------------------------------------------------------- */
 
-document.addEventListener('DOMContentLoaded', () => {
-  initFinancialManager();
-  initSocialClassificationChips();
-  initAssessedNeedsManager();
-});
-
 // --- STAGE 6: FINANCIAL INCOME & EXPENSES MANAGER ---
-function initFinancialManager() {
+export function initFinancialManager() {
   const btnOpenIncome = document.getElementById('btn-open-add-income');
   const btnCancelIncome = document.getElementById('btn-cancel-add-income');
   const btnSaveIncome = document.getElementById('btn-save-income');
@@ -41,9 +38,7 @@ function initFinancialManager() {
       statNet.style.color = net >= 0 ? '#2563eb' : '#dc2626';
     }
 
-    if (typeof window.updateWorkflowPercentages === 'function') {
-      window.updateWorkflowPercentages();
-    }
+    triggerWorkflowRecalc();
   }
 
   function renderIncomeList() {
@@ -181,7 +176,7 @@ function initFinancialManager() {
 }
 
 // --- STAGE 7: SOCIAL CLASSIFICATION CHIPS ---
-function initSocialClassificationChips() {
+export function initSocialClassificationChips() {
   const container = document.getElementById('social-classifications-chips');
   if (!container) return;
 
@@ -189,15 +184,13 @@ function initSocialClassificationChips() {
     chip.addEventListener('click', (e) => {
       e.preventDefault();
       chip.classList.toggle('chip-btn--active');
-      if (typeof window.updateWorkflowPercentages === 'function') {
-        window.updateWorkflowPercentages();
-      }
+      triggerWorkflowRecalc();
     });
   });
 }
 
 // --- STAGE 8: ASSESSED NEEDS MANAGER ---
-function initAssessedNeedsManager() {
+export function initAssessedNeedsManager() {
   const btnOpenNeed = document.getElementById('btn-open-add-need');
   const btnCancelNeed = document.getElementById('btn-cancel-add-need');
   const btnSaveNeed = document.getElementById('btn-save-need');
@@ -243,9 +236,7 @@ function initAssessedNeedsManager() {
         const idx = parseInt(btn.dataset.idx, 10);
         needsItems.splice(idx, 1);
         renderNeedsList();
-        if (typeof window.updateWorkflowPercentages === 'function') {
-          window.updateWorkflowPercentages();
-        }
+        triggerWorkflowRecalc();
       });
     });
   }
@@ -269,9 +260,7 @@ function initAssessedNeedsManager() {
       if (inlineNeedForm) inlineNeedForm.style.display = 'none';
       renderNeedsList();
       showToast('تمت إضافة الاحتياج بنجاح');
-      if (typeof window.updateWorkflowPercentages === 'function') {
-        window.updateWorkflowPercentages();
-      }
+      triggerWorkflowRecalc();
     });
   }
 }

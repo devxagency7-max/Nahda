@@ -1,7 +1,10 @@
+import { showToast } from '../core/toast.js';
+import { BENI_SUEF_DATA } from '../data/beniSuefData.js';
+
 /* --------------------------------------------------------------------------
-   0.1 HOMEPAGE DASHBOARD INTERACTIVITY ENGINE
+   HOMEPAGE DASHBOARD INTERACTIVITY ENGINE
    -------------------------------------------------------------------------- */
-function initDashboardInteractivity() {
+export function initDashboardInteractivity() {
   // Update Live Arabic Date
   const dateEl = document.getElementById('dash-current-date');
   if (dateEl) {
@@ -17,15 +20,15 @@ function initDashboardInteractivity() {
   const searchBoxCharity = document.getElementById('search-box-charity');
   const searchBoxRegion = document.getElementById('search-box-region');
   const searchBoxDate = document.getElementById('search-box-date');
-  
+
   const charitySelect = document.getElementById('dash-charity-select');
   const regionInput = document.getElementById('dash-region-input');
   const regionSuggestions = document.getElementById('dash-region-suggestions');
-  
+
   const dashDateFrom = document.getElementById('dash-date-from');
   const dashDateTo = document.getElementById('dash-date-to');
   const datePresetBtns = document.querySelectorAll('.btn-date-preset');
-  
+
   const btnSearch = document.getElementById('btn-dash-search');
   const resultsContainer = document.getElementById('dash-search-results');
   const resultsContent = document.getElementById('dash-results-content');
@@ -39,16 +42,7 @@ function initDashboardInteractivity() {
   function initRegionSearchAutocomplete() {
     if (!regionInput || !regionSuggestions) return;
 
-    // Use global BENI_SUEF_DATA or fallback structure from CSV
-    const beniSuefData = (typeof BENI_SUEF_DATA !== 'undefined') ? BENI_SUEF_DATA : {
-      "بني سويف": ["إبشنا", "الحكامنة", "الحلابية", "الدوالطة", "الدوية", "الكوم الأحمر", "أهناسيا الخضراء", "إهوه", "باروط", "باها العجوز", "بلفيا", "بني بخيت", "بني حمد", "بني رضوان", "بني سليمان الشرقية", "بني عفان", "بني هارون", "بياض العرب", "تزمنت الشرقية", "تزمنت الغربية", "حاجر بني سليمان", "دموشيا", "رياض", "سنور", "شريف", "منشأة حيدر يكن", "منشأة عاصم", "منقريش", "نزلة أبو سليم", "نزلة السعادنة", "نزلة معارك", "نعيم", "الزرابي", "تل أبو ناروز"],
-      "الواسطى": ["أبو صير الملق", "أبويط", "أطواب", "أنفسط", "إفوة", "الحومة", "الديابية", "المصلوب", "الميمون", "النواميس", "الهرم", "بني حدير", "بني سليمان", "بني غنيم", "بني محمد", "بني نصير", "جزيرة المساعدة", "جزيرة النور", "زاوية المصلوب", "صفط الشرقية", "صفط الغربية", "عطف إفوة", "قمن العروس", "كفر أبجيج", "كفر بني عثمان", "كوم أبو راضي", "كوم أدريجة", "معصرة أبو صير", "منشأة أبو صير", "میدوم", "نزلة الجنيدي", "ونا القس"],
-      "ناصر": ["أشمنت", "البرج", "الحرجة", "الحمام", "الرياض", "الزيتون", "المنصورة", "بني خليفة", "بني عدي", "بهبشين", "جزيرة أبو صالح", "دلاص", "دنديل", "طحا بوش", "طنسا الملق", "غيط البحري", "كفر الجزيرة", "كوم أبو خلاد", "منشأة الشركة", "منشأة هديب"],
-      "إهناسيا": ["أدراسية", "البهسمون", "الشوبك", "العواونة", "المسيد الأبيض", "النويرة", "براوة الوقف", "بني هاني", "بهنموه", "دير براوة", "سدمنت الجبل", "شرهي", "طما فيوم", "قاي", "قلة", "قلها", "كفر أبو شهبة", "كوم الرمل البحري", "معصرة نعسان", "منشأة الأمراء", "منشأة البديني", "منشأة الحاج", "منشأة طاهر", "منشأة عبد الصمد", "منشأة كساب", "منهرة", "منهرو", "منيل غيضان", "منيل هاني", "ميانة", "نزلة المشارقة", "نزلة المماليك", "نزلة خلف", "نزلة شاويش", "ننا"],
-      "ببا": ["أبو شربان", "أم الجنازير", "البرانقة", "البكرية", "الجزيرة الشرقية", "السلطاني", "الشهيد حسن علام", "الضباعنة", "الفقاعي", "الملاحية", "الملاحية البحرية", "بني أحمد", "بني خليل", "بني عقبة", "بني عوض", "بني قاسم", "بني مؤمنة", "بني ماضي", "بني محمد الشرقية", "بني هاشم", "جبل النور", "جزيرة الفقاعي", "جزيرة ببا", "رزقة المشارقة", "زاوية الناوية", "سدس الأمراء", "صفط راشين", "طحا لبيشة", "طرشوب", "طنسا بني مالو", "طوة", "غياضة الشرقية", "غياضة الغربية", "فزارة", "قنبش الحمراء", "كفر جمعة", "كفر منصور", "كفر ناصر", "منشأة أبو دخان", "منية الجيد", "منيل موسى", "نزلة الزاوية", "نزلة الشريف", "نزلة علي كيلاني", "هربشنت", "هلية"],
-      "سمسطا": ["الشنطور", "العساكرة", "القصبة", "المحمودية", "بدهل", "بني حلة", "بني محمد راشد", "دشاشة", "دشطوط", "سربو", "عزبة الشنطور", "عزبة قفطان", "كفر الشيخ عابد", "كفر بني علي", "كوم الرمل القبلي", "كوم النور", "مزورة", "منشأة أبو مليح", "منشأة سليمان", "نزلة الديب", "نزلة سعيد"],
-      "الفشن": ["أبسوج", "أقفهص", "البرقي", "الجفادون", "الجمهود", "الحيبة", "الزاوية الخضراء", "الشقر", "الفنت", "الفنت الغربية", "القضابي", "القليعة", "الكنيسة", "بسفا", "بني صالح", "بني منين", "تلت", "جزيرة الوكلية", "دلهانس", "شنري", "صالح", "صفط الخرسة", "صفط العرفا", "صفط النور", "طلا", "عزبة البنك", "عزبة تلت", "كفر درويش", "كفر منسابة", "منشأة السادات", "منشأة عمرو", "نزلة أقفهص", "نزلة البرقي", "نزلة حنا حنا"]
-    };
+    const beniSuefData = BENI_SUEF_DATA;
 
     const allOptions = [];
 
@@ -91,9 +85,9 @@ function initDashboardInteractivity() {
           return;
         }
 
-        const matches = allOptions.filter(opt => 
-          opt.text.toLowerCase().includes(val) || 
-          opt.village.toLowerCase().includes(val) || 
+        const matches = allOptions.filter(opt =>
+          opt.text.toLowerCase().includes(val) ||
+          opt.village.toLowerCase().includes(val) ||
           opt.center.toLowerCase().includes(val)
         ).slice(0, 10);
 
@@ -266,7 +260,7 @@ function initDashboardInteractivity() {
     else if (mode === 'charity') searchLabel = 'الجمعية';
     else if (mode === 'region') searchLabel = 'المنطقة والقرية';
     else if (mode === 'date') searchLabel = 'تاريخ البحث';
-    
+
     resultsContent.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
         <div>
@@ -297,7 +291,7 @@ function initDashboardInteractivity() {
   if (btnToggleRecent && recentCard) {
     btnToggleRecent.addEventListener('click', () => {
       const isCollapsed = recentCard.classList.contains('dash-recent-section--collapsed');
-      
+
       if (isCollapsed) {
         recentCard.classList.remove('dash-recent-section--expanded');
         recentCard.classList.add('dash-recent-section--expanded');
@@ -312,4 +306,3 @@ function initDashboardInteractivity() {
     });
   }
 }
-
