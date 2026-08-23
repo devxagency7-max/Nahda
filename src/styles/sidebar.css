@@ -154,6 +154,24 @@
   background: rgba(29, 78, 216, 0.20);
 }
 
+.accordion-header--logout {
+  color: #ef4444;
+}
+
+.accordion-header--logout .accordion-header__icon {
+  stroke: #ef4444;
+}
+
+.accordion-header--logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #dc2626;
+}
+
+.accordion-header--logout:hover .accordion-header__icon {
+  stroke: #dc2626;
+}
+
 .accordion-header__content {
   display: flex;
   align-items: center;

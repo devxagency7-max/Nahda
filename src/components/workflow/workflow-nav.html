@@ -1,0 +1,109 @@
+<!-- Connected Step Tabs Navigation (10 Interactive Workflow Steps) -->
+<section class="workflow-nav-card workflow-nav-card--expanded" id="workflow-nav-card">
+  <div class="workflow-nav-header">
+    <div class="workflow-nav-header__title">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+      </svg>
+      <div>
+        <span style="font-weight: 800; font-size: var(--font-size-md); color: #000000;">مسار بيانات
+          الحالة</span>
+        <p style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-top: 2px;">تتبع نسبة
+          اكتمال وإنجاز كافة البيانات لجميع مراحل منظومة المعاملات</p>
+      </div>
+    </div>
+
+    <!-- State Data Management Center Button & Toggle Button -->
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="btn btn--primary" id="btn-open-state-data-mgmt" data-view-target="state-mgmt" style="padding: 8px 16px; font-size: 13px; border-radius: 12px;" title="الانتقال لصفحة إدارة جميع بيانات وحقول الحالة المنسدلة">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        <span>إدارة بيانات الحالة</span>
+      </button>
+
+      <button type="button" class="workflow-toggle-btn" id="workflow-toggle-btn" aria-expanded="true"
+        title="عرض/طي جميع الخطوات">
+        <span class="workflow-toggle-btn__text" id="workflow-toggle-text">طي الخطوات</span>
+        <svg class="workflow-toggle-btn__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="workflow-road-wrapper" id="workflow-road-wrapper"
+    style="padding: 24px 16px 16px; position: relative;">
+    <!-- SVG Road Line Connecting Path (Static - RTL) -->
+    <svg class="workflow-road-svg" viewBox="0 0 900 380" preserveAspectRatio="none"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 380px; pointer-events: none; z-index: 1;">
+      <!-- Shadow/base path -->
+      <path d="
+        M 750 32 L 150 32 C 70 32, 70 132, 150 132 L 750 132 C 830 132, 830 232, 750 232 L 150 232 C 70 232, 70 332, 450 332
+      " stroke="rgba(0,0,0,0.07)" stroke-width="6" fill="none" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <!-- Main solid static line -->
+      <path d="
+        M 750 32 L 150 32 C 70 32, 70 132, 150 132 L 750 132 C 830 132, 830 232, 750 232 L 150 232 C 70 232, 70 332, 450 332
+      " stroke="rgba(37,99,235,0.4)" stroke-width="4" fill="none" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </svg>
+
+    <!-- 3 Steps Per Row Grid of All 10 Workflow Step Nodes -->
+    <div class="workflow-steps-grid"
+      style="position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 20px; column-gap: 16px; align-items: center; justify-items: center; width: 100%;">
+      <button class="workflow-tab workflow-tab--active" data-step="1" id="step-node-1" type="button">
+        <div class="workflow-tab__node" id="step-pct-1">1</div>
+        <span class="workflow-tab__label">1. الأساسية والأفراد</span>
+      </button>
+
+      <button class="workflow-tab" data-step="2" id="step-node-2" type="button">
+        <div class="workflow-tab__node" id="step-pct-2">2</div>
+        <span class="workflow-tab__label">2. المرفقات</span>
+      </button>
+
+      <button class="workflow-tab" data-step="3" id="step-node-3" type="button">
+        <div class="workflow-tab__node" id="step-pct-3">3</div>
+        <span class="workflow-tab__label">3. السكن</span>
+      </button>
+
+      <button class="workflow-tab" data-step="4" id="step-node-4" type="button">
+        <div class="workflow-tab__node" id="step-pct-4">4</div>
+        <span class="workflow-tab__label">4. المرافق والتجهيزات</span>
+      </button>
+
+      <button class="workflow-tab" data-step="5" id="step-node-5" type="button">
+        <div class="workflow-tab__node" id="step-pct-5">5</div>
+        <span class="workflow-tab__label">5. الحيازة الزراعية</span>
+      </button>
+
+      <button class="workflow-tab" data-step="6" id="step-node-6" type="button">
+        <div class="workflow-tab__node" id="step-pct-6">6</div>
+        <span class="workflow-tab__label">6. الدخل والمصروفات</span>
+      </button>
+
+      <button class="workflow-tab" data-step="7" id="step-node-7" type="button">
+        <div class="workflow-tab__node" id="step-pct-7">7</div>
+        <span class="workflow-tab__label">7. التصنيف</span>
+      </button>
+
+      <button class="workflow-tab" data-step="8" id="step-node-8" type="button">
+        <div class="workflow-tab__node" id="step-pct-8">8</div>
+        <span class="workflow-tab__label">8. الاحتياجات</span>
+      </button>
+
+      <button class="workflow-tab" data-step="9" id="step-node-9" type="button">
+        <div class="workflow-tab__node" id="step-pct-9">9</div>
+        <span class="workflow-tab__label">9. التقييمات</span>
+      </button>
+
+      <button class="workflow-tab" data-step="10" id="step-node-10"
+        style="grid-column: span 3; justify-self: center;" type="button">
+        <div class="workflow-tab__node" id="step-pct-10">10</div>
+        <span class="workflow-tab__label">10. الدعم</span>
+      </button>
+    </div>
+  </div>
+</section>

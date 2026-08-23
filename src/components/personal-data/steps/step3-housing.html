@@ -1,0 +1,141 @@
+<!-- TAB 3: السكن -->
+<div class="step-pane" id="step-pane-3" style="display: none;">
+  <section class="glass-card" id="card-tab-3">
+    <div class="glass-card__header">
+      <div class="glass-card__title-group">
+        <div class="glass-card__icon" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h2 class="glass-card__title">3. بيانات السكن والمبنى</h2>
+          <p class="glass-card__subtitle">نوع حيازة المسكن، حالة المبنى والسقف وحجم الغرف</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid form-grid--3-col">
+      <div class="form-group">
+        <label class="form-label" for="housing-tenure"><span>نوع حيازة السكن</span></label>
+        <div class="form-select-wrapper">
+          <select id="housing-tenure" class="form-select">
+            <option value="" selected disabled>اختر نوع الحيازة...</option>
+            <option value="إيجار جديد">إيجار جديد</option>
+            <option value="إيجار قديم">إيجار قديم</option>
+            <option value="ملك">ملك</option>
+            <option value="استضافة">استضافة / بدون مقابل</option>
+            <option value="مفروش">مفروش</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="building-type"><span>نوع المبنى</span></label>
+        <div class="form-select-wrapper">
+          <select id="building-type" class="form-select">
+            <option value="" selected disabled>اختر نوع المبنى...</option>
+            <option value="خرسانة مسلحة">خرسانة مسلحة</option>
+            <option value="طوب أحمر">طوب أحمر</option>
+            <option value="طوب لبن">طوب لبن / طين</option>
+            <option value="خشب / عشة">خشب / عشة</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="rooms-count"><span>عدد الغرف</span></label>
+        <input type="number" id="rooms-count" class="form-input" placeholder="أدخل عدد الغرف..." min="1">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="roof-condition"><span>حالة السقف</span></label>
+        <div class="form-select-wrapper">
+          <select id="roof-condition" class="form-select">
+            <option value="" selected disabled>اختر حالة السقف...</option>
+            <option value="سليم صبة">سليم (صبة خرسانية)</option>
+            <option value="خشب وعروق">خشب وعروق</option>
+            <option value="متهالك / يتسرب">متهالك / يتسرب منه الماء</option>
+            <option value="بدون سقف">بدون سقف</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="housing-floor"><span>نوع الأرضية</span></label>
+        <div class="form-select-wrapper">
+          <select id="housing-floor" class="form-select">
+            <option value="" selected disabled>اختر نوع الأرضية...</option>
+            <option value="تراب">تراب</option>
+            <option value="أسمنت">أسمنت</option>
+            <option value="بلاط">بلاط</option>
+            <option value="سيراميك">سيراميك</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="housing-entrance"><span>نوع المدخل</span></label>
+        <div class="form-select-wrapper">
+          <select id="housing-entrance" class="form-select">
+            <option value="" selected disabled>اختر نوع المدخل...</option>
+            <option value="تراب">تراب</option>
+            <option value="أسمنت">أسمنت</option>
+            <option value="بلاط">بلاط</option>
+            <option value="سيراميك">سيراميك</option>
+            <option value="رخام">رخام</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bathroom-type"><span>طبيعة دورات المياه</span></label>
+        <div class="form-select-wrapper">
+          <select id="bathroom-type" class="form-select">
+            <option value="" selected disabled>اختر طبيعة الحمام...</option>
+            <option value="خاص">خاص بالأسرة</option>
+            <option value="مشترك">مشترك مع آخرين</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bathroom-condition"><span>حالة دورات المياه</span></label>
+        <div class="form-select-wrapper">
+          <select id="bathroom-condition" class="form-select">
+            <option value="" selected disabled>اختر حالة الحمام...</option>
+            <option value="أدمي">أدمي (صالح للاستخدام)</option>
+            <option value="غير أدمي">غير أدمي (متهالك)</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="monthly-rent"><span>الإيجار الشهري (إن وجد)</span></label>
+        <input type="number" id="monthly-rent" class="form-input" placeholder="قيمة الإيجار بالجنيه...">
+      </div>
+    </div>
+  </section>
+</div>

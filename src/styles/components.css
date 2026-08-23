@@ -854,3 +854,516 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+/* --------------------------------------------------------------------------
+   12. STATE DATA MANAGEMENT CONTROL CENTER STYLES («إدارة بيانات الحالة»)
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   12. STATE DATA MANAGEMENT NARROW SIDE DRAWER STYLES («إدارة بيانات الحالة»)
+   -------------------------------------------------------------------------- */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1050;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeInDrawer 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-overlay--hidden {
+  display: none !important;
+}
+
+@keyframes fadeInDrawer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.state-mgmt-drawer {
+  width: 440px;
+  max-width: 90vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: -15px 0 45px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.drawer-header {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  background: #ffffff;
+}
+
+.drawer-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.drawer-subtitle {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.drawer-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  flex: 1;
+  background: #f8fafc;
+}
+
+.drawer-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #ffffff;
+}
+
+.state-mgmt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drawer-field-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  transition: all var(--transition-fast);
+}
+
+.drawer-field-card:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.06);
+}
+
+.drawer-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.drawer-field-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 3px 0 0 0;
+}
+
+.drawer-field-id {
+  font-size: 10px;
+  background: rgba(241, 245, 249, 0.9);
+  color: #64748b;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Options CRUD Container */
+.options-crud-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.options-crud-header {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.options-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.option-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.option-item-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.option-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-opt-action {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: all var(--transition-fast);
+}
+
+.btn-opt-action:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #0f172a;
+}
+
+.add-option-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-opt-input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* In-Field Combobox Reset Button */
+.btn-in-field-reset {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast);
+}
+
+.btn-in-field-reset:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Page View Grid for State Data Management (Dynamic 2 vs 3 Cards based on Sidebar State) */
+#view-state-mgmt {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+#state-mgmt-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 32px;
+  padding: 28px 32px;
+  overflow-x: hidden;
+  transition: padding var(--transition-smooth);
+}
+
+/* 1. Default state (Sidebar OPEN): Strictly 2 Cards per row */
+.state-mgmt-page-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: all var(--transition-smooth);
+}
+
+/* 2. Sidebar COLLAPSED (Closed): Dynamically expands to 3 Cards per row */
+body.sidebar-is-collapsed .state-mgmt-page-grid,
+.sidebar--collapsed + .main-wrapper .state-mgmt-page-grid,
+.sidebar--collapsed ~ .main-wrapper .state-mgmt-page-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* Mobile & Small Screens (<= 768px): 1 Column */
+@media (max-width: 768px) {
+  #state-mgmt-card {
+    padding: 18px 14px;
+  }
+
+  body.sidebar-is-collapsed .state-mgmt-page-grid,
+  .sidebar--collapsed + .main-wrapper .state-mgmt-page-grid,
+  .sidebar--collapsed ~ .main-wrapper .state-mgmt-page-grid,
+  .state-mgmt-page-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+}
+
+.state-page-field-card {
+  border-radius: 16px;
+  transition: all var(--transition-normal);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.state-page-field-card:hover {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Enhanced Glassmorphism Dynamic Tab Bar (Flex Wrap - No Page Scroll) */
+.state-mgmt-tabs-wrapper {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color-strong);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.state-mgmt-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.state-mgmt-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #334155;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.state-mgmt-tab:hover {
+  background: #ffffff;
+  color: var(--color-primary);
+  border-color: rgba(37, 99, 235, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.1);
+}
+
+.state-mgmt-tab--active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+.state-mgmt-tab .tab-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  transition: all var(--transition-fast);
+}
+
+.state-mgmt-tab--active .tab-num {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.state-mgmt-tab .tab-icon {
+  font-size: 14px;
+}
+
+/* --- Locations & Villages Management Card Styles --- */
+.location-center-box {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.location-center-box:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.location-center-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
+}
+
+.location-center-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.location-center-icon {
+  font-size: 18px;
+}
+
+.location-center-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #065f46;
+}
+
+.location-center-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-villages-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.location-village-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  transition: all 0.15s ease;
+}
+
+.location-village-chip:hover {
+  background: #ffffff;
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-location-village-edit,
+.btn-location-village-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 12px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-location-village-edit:hover,
+.btn-location-village-delete:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+
+
+
+
+
+

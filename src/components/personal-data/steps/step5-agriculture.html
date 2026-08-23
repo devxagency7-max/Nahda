@@ -1,0 +1,56 @@
+<!-- TAB 5: الحيازة الزراعية -->
+<div class="step-pane" id="step-pane-5" style="display: none;">
+  <section class="glass-card" id="card-tab-5">
+    <div class="glass-card__header">
+      <div class="glass-card__title-group">
+        <div class="glass-card__icon" style="background: rgba(16, 185, 129, 0.15); color: #059669;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="glass-card__title">5. الحيازة الزراعية والثروة الحيوانية</h2>
+          <p class="glass-card__subtitle">المساحة الزراعية المحازة، نوع المحصول، والأغنام والمواشي</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid form-grid--3-col">
+      <div class="form-group">
+        <label class="form-label" for="agri-tenure"><span>نوع الحيازة</span></label>
+        <div class="form-select-wrapper">
+          <select id="agri-tenure" class="form-select">
+            <option value="لا يوجد">لا يوجد حيازة</option>
+            <option value="ملك">ملك</option>
+            <option value="إيجار">إيجار</option>
+            <option value="مشاركة">مشاركة</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="agri-area"><span>المساحة (قيراط/فدان)</span></label>
+        <input type="text" id="agri-area" class="form-input" placeholder="مثال: 12 قيراط...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="livestock-count"><span>الثروة الحيوانية</span></label>
+        <input type="text" id="livestock-count" class="form-input"
+          placeholder="عدد الأغنام / الماشية إن وجد...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="agri-crop-type"><span>نوع المحصول / الزراعة</span></label>
+        <input type="text" id="agri-crop-type" class="form-input" placeholder="مثال: قمح، برسين، خضروات...">
+      </div>
+
+      <div class="form-group form-group--full">
+        <label class="form-label" for="agri-notes"><span>ملاحظات الحيازة والأصول الزراعية</span></label>
+        <input type="text" id="agri-notes" class="form-input" placeholder="أدخل أي تفاصيل وملاحظات إضافية...">
+      </div>
+    </div>
+  </section>
+</div>
