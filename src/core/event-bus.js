@@ -66,5 +66,8 @@ export const EVENTS = {
   ASSESSED_NEEDS_UPDATED: 'needs:data-updated',
   USER_CHANGED: 'user:changed',
   CHARITIES_UPDATED: 'charities:updated',
-  LOCATIONS_UPDATED: 'locations:updated'
+  LOCATIONS_UPDATED: 'locations:updated',
+  EMPLOYEES_UPDATED: 'employees:updated',
+  AGRICULTURE_UPDATED: 'agriculture:updated',
+  CASE_UPDATED: 'case:updated'
 };

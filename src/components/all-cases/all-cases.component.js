@@ -63,13 +63,45 @@ export function renderAllCasesGrid() {
   });
 
   if (filtered.length === 0) {
+    // Check if searchQuery looks like a national ID (digits only, up to 14)
+    const isNidSearch = /^\d+$/.test(searchQuery) && searchQuery.length >= 1;
+
     casesGrid.innerHTML = `
       <div class="glass-card" style="padding: 40px; text-align: center; grid-column: 1 / -1;">
         <span style="font-size: 36px; display: block; margin-bottom: 12px;">🔍</span>
         <h3 style="font-size: 18px; font-weight: 800; color: #000; margin: 0 0 6px;">لم يتم العثور على حالات مطابقة</h3>
-        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">جرب تغيير معيار التصفية أو البحث عن اسم/رقم قومي آخر.</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0 0 16px;">جرب تغيير معيار التصفية أو البحث عن اسم/رقم قومي آخر.</p>
+        ${isNidSearch ? `
+          <button type="button" class="btn btn--primary btn--sm btn-register-new-case-nid" data-prefill-nid="${DOM.escapeHTML(searchQuery)}" style="font-weight: 800; font-size: 14px; padding: 10px 24px; gap: 8px; display: inline-flex; align-items: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            تسجيل حالة جديدة بالرقم القومي: ${DOM.escapeHTML(searchQuery)}
+          </button>
+        ` : ''}
       </div>
     `;
+
+    // Attach click handler for register new case button
+    const registerBtn = casesGrid.querySelector('.btn-register-new-case-nid');
+    if (registerBtn) {
+      registerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const prefillNid = registerBtn.getAttribute('data-prefill-nid');
+        if (window.switchView) {
+          window.switchView('personal-data');
+        }
+        // Prefill national ID after view switch (use setTimeout to ensure DOM is ready)
+        if (prefillNid) {
+          setTimeout(() => {
+            const nidInput = DOM.qs('#national-id');
+            if (nidInput) {
+              nidInput.value = prefillNid;
+              nidInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+          }, 100);
+        }
+      });
+    }
+
     return;
   }
 
@@ -226,14 +258,18 @@ function openFullCaseModal(c) {
       </div>
     </div>
 
-    <!-- Card 8: رأي وتوصية الأخصائي الاجتماعي -->
-    <div class="glass-card case-section-card" style="border: 1.5px solid rgba(37, 99, 235, 0.4); background: rgba(239, 246, 255, 0.9);">
-      <div class="case-section-card__title" style="color: #1d4ed8;">
-        <span>✍️ 8. تقرير ورأي الأخصائي الاجتماعي الميداني</span>
+    <!-- Card 8: رأي وتوصية الأخصائي الاجتماعي (يُسجَّل من تطبيق الأخصائي) -->
+    <div class="glass-card case-section-card" style="border: 1.5px solid rgba(13, 148, 136, 0.4); background: rgba(240, 253, 250, 0.9);">
+      <div class="case-section-card__title" style="color: #0f766e;">
+        <span>🏠 8. رأي الأخصائي الاجتماعي الميداني</span>
       </div>
-      <p style="font-size: 14px; line-height: 1.7; color: #1e3a8a; margin: 0; font-weight: 600;">
-        "${DOM.escapeHTML(c.workerAssessment)}"
-      </p>
+      ${c.workerOpinion && c.workerOpinion.notes ? `
+        <p style="font-size: 14px; line-height: 1.7; color: #134e4a; margin: 0; font-weight: 600;">
+          "${DOM.escapeHTML(c.workerOpinion.notes)}"
+        </p>
+      ` : `
+        <p style="font-size: 14px; color: #475569; margin: 0; font-weight: 700;">لم يسجّل الأخصائي الميداني رأيه بعد.</p>
+      `}
     </div>
 
     <!-- Card 9: الدعم المباشر والاحتياجات المقترحة -->

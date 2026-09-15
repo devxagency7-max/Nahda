@@ -11,7 +11,10 @@ export const STORAGE_KEYS = {
   FAMILY_MEMBERS: 'nahda_family_members',
   CURRENT_USER: 'nahda_current_user',
   CHARITIES: 'nahda_charities',
-  BENI_SUEF_LOCATIONS: 'nahda_beni_suef_locations'
+  BENI_SUEF_LOCATIONS: 'nahda_beni_suef_locations',
+  EMPLOYEES: 'nahda_employees',
+  AGRICULTURE: 'nahda_agriculture_data',
+  VISITED_STAGES: 'nahda_visited_stages'
 };
 
 export const StorageService = {

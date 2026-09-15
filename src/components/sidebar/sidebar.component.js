@@ -5,6 +5,7 @@
 import { DOM } from '../../utils/dom.js';
 import { store } from '../../state/store.js';
 import { EventBus, EVENTS } from '../../core/event-bus.js';
+import { can, PERMISSIONS, roleLabel, currentRole } from '../../core/permissions.js';
 
 export function initSidebarAccordion() {
   const accordionHeaders = DOM.qsa('.accordion-header');
@@ -17,8 +18,8 @@ export function initSidebarAccordion() {
 
   accordionHeaders.forEach(header => {
     header.addEventListener('click', (e) => {
-      // If header is a direct link (e.g. <a> anchor), don't treat as expandable accordion header
-      if (header.tagName === 'A' || header.id === 'nav-bg-card-link') {
+      // If header is a direct link (e.g. <a> anchor or direct data-view-target link), don't treat as expandable accordion header
+      if (header.tagName === 'A' || header.id === 'nav-bg-card-link' || header.id === 'nav-employees-link' || header.id === 'nav-dashboard-link' || !header.closest('.accordion-group')?.querySelector('.accordion-body')) {
         return;
       }
 
@@ -114,7 +115,15 @@ export function initSidebarUserProfile() {
     if (!user) return;
     if (avatarImg && user.avatar) avatarImg.src = user.avatar;
     if (nameEl && user.name) nameEl.textContent = user.name;
-    if (roleEl && user.roleLabel) roleEl.textContent = user.roleLabel;
+    // الاسم المعروض يُشتق من roleCode لا من roleLabel المخزَّن، فلو الجلسة
+    // المحفوظة قديمة أو ناقصة يفضل المعروض مطابقًا للصلاحيات الفعلية.
+    if (roleEl) roleEl.textContent = roleLabel(currentRole());
+
+    // Hide navigation entries the current role has no permission to open
+    const employeesGroup = DOM.qs('#sidebar-employees-group, #nav-employees-group');
+    if (employeesGroup) {
+      employeesGroup.style.display = can(PERMISSIONS.VIEW_EMPLOYEES) ? 'block' : 'none';
+    }
   }
 
   update();

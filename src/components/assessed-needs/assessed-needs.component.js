@@ -6,6 +6,7 @@ import { showToast } from '../../utils/toast.js';
 import { triggerWorkflowRecalc } from '../../core/state.js';
 import { store } from '../../state/store.js';
 import { DOM } from '../../utils/dom.js';
+import { parseLocalizedFloat } from '../../utils/nationalId.js';
 
 export function initAssessedNeedsManager() {
   const btnOpenNeed = DOM.qs('#btn-open-add-need');
@@ -73,7 +74,7 @@ export function initAssessedNeedsManager() {
       const priority = DOM.qs('#new-need-priority')?.value || 'عالية';
       const description = DOM.qs('#new-need-description')?.value.trim() || '';
       const reason = DOM.qs('#new-need-reason')?.value.trim() || '';
-      const cost = parseFloat(DOM.qs('#new-need-cost')?.value) || 0;
+      const cost = parseLocalizedFloat(DOM.qs('#new-need-cost')?.value) || 0;
 
       needsItems.push({ type, priority, description, reason, cost });
       if (inlineNeedForm) inlineNeedForm.style.display = 'none';

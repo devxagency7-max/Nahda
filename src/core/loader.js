@@ -19,7 +19,7 @@ import dashKpisHtml from '../components/dashboard/parts/dash-kpis.html?raw';
 import dashRecentCasesHtml from '../components/dashboard/parts/dash-recent-cases.html?raw';
 import dashboardHtml from '../components/dashboard/dashboard.html?raw';
 
-// Workflow & Personal Data 10-Step Panes
+// Workflow & Personal Data 8-Step Panes
 import workflowNavHtml from '../components/workflow/workflow-nav.html?raw';
 import step1Html from '../components/personal-data/steps/step1-demographics.html?raw';
 import step2Html from '../components/personal-data/steps/step2-attachments.html?raw';
@@ -27,10 +27,8 @@ import step3Html from '../components/personal-data/steps/step3-housing.html?raw'
 import step4Html from '../components/personal-data/steps/step4-utilities.html?raw';
 import step5Html from '../components/personal-data/steps/step5-agriculture.html?raw';
 import step6Html from '../components/personal-data/steps/step6-financial.html?raw';
-import step7Html from '../components/personal-data/steps/step7-classification.html?raw';
-import step8Html from '../components/personal-data/steps/step8-needs.html?raw';
-import step9Html from '../components/personal-data/steps/step9-assessment.html?raw';
-import step10Html from '../components/personal-data/steps/step10-decision.html?raw';
+import step7Html from '../components/personal-data/steps/step7-support.html?raw';
+import step8Html from '../components/personal-data/steps/step8-assessment.html?raw';
 import personalDataHtml from '../components/personal-data/personal-data.html?raw';
 
 // Background Studio View
@@ -41,6 +39,9 @@ import stateDataMgmtHtml from '../components/state-data-management/state-data-ma
 
 // Charities Management View
 import charitiesHtml from '../components/charities/charities.html?raw';
+
+// Employees Management View (for Manager & Admin)
+import employeesHtml from '../components/employees/employees.html?raw';
 
 // Edit Profile View
 import profileHtml from '../components/profile/profile.html?raw';
@@ -115,12 +116,6 @@ export function mountComponentTemplates() {
 
     const s8Mount = document.getElementById('step-pane-8-mount');
     if (s8Mount) s8Mount.outerHTML = step8Html;
-
-    const s9Mount = document.getElementById('step-pane-9-mount');
-    if (s9Mount) s9Mount.outerHTML = step9Html;
-
-    const s10Mount = document.getElementById('step-pane-10-mount');
-    if (s10Mount) s10Mount.outerHTML = step10Html;
   }
 
   const bgStudioContainer = document.getElementById('bg-studio-view-mount');
@@ -131,6 +126,9 @@ export function mountComponentTemplates() {
 
   const charitiesContainer = document.getElementById('charities-view-mount');
   if (charitiesContainer) charitiesContainer.outerHTML = charitiesHtml;
+
+  const employeesContainer = document.getElementById('employees-view-mount');
+  if (employeesContainer) employeesContainer.outerHTML = employeesHtml;
 
   const profileContainer = document.getElementById('profile-view-mount');
   if (profileContainer) profileContainer.outerHTML = profileHtml;

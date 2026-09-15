@@ -59,6 +59,36 @@ export function normalizeNumerals(input) {
 }
 
 /**
+ * Same Eastern Arabic / Persian → English digit conversion as normalizeNumerals,
+ * but keeps a single decimal point so monetary/amount fields (e.g. ١٢٥٠.٥٠)
+ * survive parseFloat() correctly instead of silently becoming NaN → 0.
+ * @param {string|number} input
+ * @returns {string}
+ */
+export function normalizeDecimalNumerals(input) {
+  if (input === null || input === undefined) return '';
+  const str = String(input);
+  const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  const persianNumerals = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+  return str
+    .replace(/[٠-٩]/g, d => arabicNumerals.indexOf(d))
+    .replace(/[۰-۹]/g, d => persianNumerals.indexOf(d))
+    .replace(/[^\d.]/g, ''); // Strip everything except digits and decimal point
+}
+
+/**
+ * parseFloat() that first normalizes Eastern Arabic / Persian numerals, so
+ * amounts typed in Arabic digits parse the same as English digits.
+ * @param {string|number} value
+ * @returns {number}
+ */
+export function parseLocalizedFloat(value) {
+  if (value === null || value === undefined || value === '') return NaN;
+  return parseFloat(normalizeDecimalNumerals(value));
+}
+
+/**
  * Dynamically calculates completed age in years from a birth date relative to current date
  * @param {Date} birthDate 
  * @param {Date} [currentDate=new Date()] 

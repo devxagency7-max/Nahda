@@ -9,6 +9,48 @@ import { DOM } from '../../utils/dom.js';
 import { switchView } from '../../core/router.js';
 import { EventBus, EVENTS } from '../../core/event-bus.js';
 import { getTimeGreeting } from '../../utils/date.js';
+import { ROLES, ROLE_LABELS, SOCIAL_WORKER_ROLE } from '../../core/permissions.js';
+
+// الحساب الافتراضي لأي مدخل غير معروف — أقل دور في الهرم
+const FALLBACK_ACCOUNT = {
+  name: 'حسن',
+  roleCode: ROLES.DATA_ENTRY,
+  email: 'hassan@gmail.com'
+};
+
+/**
+ * Match the typed email/username against the staff roster held in the store.
+ * Matching is done on the email local part so "hassanalaa" works as well as
+ * the full address. Unknown input logs in as the default data-entry account.
+ *
+ * الأخصائي الميداني موجود في جدول الموظفين لأن الويب بيسند له الحالات، لكنه
+ * مايسجلش دخول هنا — شغله كله من تطبيق الموبايل المنفصل.
+ */
+function resolveAccount(inputVal) {
+  if (!inputVal) return { ...FALLBACK_ACCOUNT };
+
+  const employees = store.employees || [];
+  const match = employees.find(emp => {
+    const empEmail = (emp.email || '').toLowerCase();
+    if (!empEmail) return false;
+    return empEmail === inputVal || empEmail.split('@')[0] === inputVal;
+  });
+
+  if (match && match.roleCode === SOCIAL_WORKER_ROLE) {
+    return { blocked: true, name: match.name };
+  }
+
+  if (match) {
+    return { name: match.name, roleCode: match.roleCode, email: match.email };
+  }
+
+  // Unrecognised account: keep whatever was typed, lowest privileges.
+  return {
+    name: inputVal.split('@')[0],
+    roleCode: ROLES.DATA_ENTRY,
+    email: inputVal.includes('@') ? inputVal : `${inputVal}@nahda.org.eg`
+  };
+}
 
 export function initLoginScreen() {
   const loginForm = DOM.qs('#login-form');
@@ -36,38 +78,21 @@ export function initLoginScreen() {
   // Perform User Authentication & Transition to Dashboard
   function performLogin(emailOrUsername) {
     const inputVal = (emailOrUsername || '').trim().toLowerCase();
-    
-    let name = 'حسن';
-    let roleLabel = 'مدير النظام';
-    let roleCode = 'admin';
-    let email = inputVal || 'hassan@gmail.com';
 
-    if (inputVal === 'hassanalaa@gmail.com' || inputVal === 'hassanalaa') {
-      name = 'حسن علاء';
-      roleLabel = 'مراجع';
-      roleCode = 'reviewer';
-      email = 'hassanalaa@gmail.com';
-    } else if (inputVal === 'hassanalaahafez@gmail.com' || inputVal === 'hassanalaahafez') {
-      name = 'حسن علاء حافظ';
-      roleLabel = 'مدير';
-      roleCode = 'manager';
-      email = 'hassanalaahafez@gmail.com';
-    } else if (inputVal === 'hassan@gmail.com' || inputVal === 'hassan') {
-      name = 'حسن';
-      roleLabel = 'مدير النظام';
-      roleCode = 'admin';
-      email = 'hassan@gmail.com';
-    } else if (inputVal.includes('hassanalaahafez')) {
-      name = 'حسن علاء حافظ';
-      roleLabel = 'مدير';
-      roleCode = 'manager';
-    } else if (inputVal.includes('hassanalaa')) {
-      name = 'حسن علاء';
-      roleLabel = 'مراجع';
-      roleCode = 'reviewer';
-    } else if (inputVal) {
-      name = inputVal.split('@')[0];
+    // Resolve the account against the staff roster; anything unrecognised
+    // falls back to the least-privileged role (مدخل بيانات).
+    const account = resolveAccount(inputVal);
+
+    // حساب أخصائي ميداني — شغله من التطبيق، مش من الويب
+    if (account.blocked) {
+      showToast(`${account.name} أخصائي ميداني — الدخول من تطبيق الأخصائي وليس من الويب 📱`);
+      return;
     }
+
+    const name = account.name;
+    const roleCode = account.roleCode;
+    const roleLabel = ROLE_LABELS[roleCode] || 'موظف';
+    const email = account.email;
 
     if (submitBtn) {
       submitBtn.classList.add('login-submit-btn--loading');
@@ -94,7 +119,7 @@ export function initLoginScreen() {
       });
 
       // Update UI Header and Sidebar User Metadata
-      updateUserDOM(name, roleLabel);
+      updateUserDOM(name);
 
       // Reset submit button state
       if (submitBtn) {
@@ -115,17 +140,14 @@ export function initLoginScreen() {
     }, 350);
   }
 
-  // Update DOM text for logged-in user across sidebar and dashboard hero
-  function updateUserDOM(name, roleLabel) {
-    const sidebarUserName = DOM.qs('.sidebar__footer .user-name');
-    const sidebarUserRole = DOM.qs('.sidebar__footer .user-role');
+  // Update the dashboard hero greeting for the logged-in user.
+  // بيانات الشريط الجانبي وإظهار أقسامه مسؤولية initSidebarUserProfile.
+  function updateUserDOM(name) {
     const greetingEl = DOM.qs('.dash-hero-card__greeting');
     const nameEl = DOM.qs('.dash-hero-card__name');
     const heroTitle = DOM.qs('.dash-hero-card__title');
     const greeting = getTimeGreeting();
 
-    if (sidebarUserName) sidebarUserName.textContent = name;
-    if (sidebarUserRole) sidebarUserRole.textContent = roleLabel;
     if (greetingEl) greetingEl.textContent = greeting;
     if (nameEl) nameEl.textContent = name;
     if (!greetingEl && heroTitle) {
@@ -158,13 +180,13 @@ export function initLoginScreen() {
   // Listen for User Changes via EventBus
   EventBus.on(EVENTS.USER_CHANGED, (user) => {
     if (user && user.name) {
-      updateUserDOM(user.name, user.roleLabel);
+      updateUserDOM(user.name);
     }
   });
 
   // Apply stored user data on initial boot
   const initialUser = store.currentUser;
   if (initialUser && initialUser.name) {
-    updateUserDOM(initialUser.name, initialUser.roleLabel);
+    updateUserDOM(initialUser.name);
   }
 }

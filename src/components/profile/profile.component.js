@@ -7,6 +7,7 @@ import { store } from '../../state/store.js';
 import { DOM } from '../../utils/dom.js';
 import { showToast } from '../../utils/toast.js';
 import { EventBus, EVENTS } from '../../core/event-bus.js';
+import { roleLabel, currentRole } from '../../core/permissions.js';
 
 export function initProfileComponent() {
   const form = DOM.qs('#profile-form');
@@ -32,7 +33,8 @@ export function initProfileComponent() {
     if (emailInput) emailInput.value = user.email || '';
     if (genderSelect) genderSelect.value = user.gender || 'ذكر';
     if (phoneInput) phoneInput.value = user.phone || '';
-    if (roleInput) roleInput.value = user.roleLabel || 'مدير النظام';
+    // الدور معروض للقراءة فقط ومشتق من roleCode، مش من نص محفوظ
+    if (roleInput) roleInput.value = roleLabel(currentRole());
   }
 
   populateForm();

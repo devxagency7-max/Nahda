@@ -238,7 +238,7 @@
         <label class="form-label" for="governorate"><span>المحافظة</span></label>
         <div class="form-select-wrapper">
           <select id="governorate" class="form-select">
-            <option value="" selected disabled>-- اختر المحافظة --</option>
+            <option value="" disabled>-- اختر المحافظة --</option>
             <option value="القاهرة">القاهرة</option>
             <option value="الإسكندرية">الإسكندرية</option>
             <option value="بورسعيد">بورسعيد</option>
@@ -253,7 +253,7 @@
             <option value="البحيرة">البحيرة</option>
             <option value="الإسماعيلية">الإسماعيلية</option>
             <option value="الجيزة">الجيزة</option>
-            <option value="بني سويف">بني سويف</option>
+            <option value="بني سويف" selected>بني سويف</option>
             <option value="الفيوم">الفيوم</option>
             <option value="المنيا">المنيا</option>
             <option value="أسيوط">أسيوط</option>
@@ -347,6 +347,22 @@
         <div class="input-container">
           <input type="number" id="head-monthly-income" class="form-input"
             placeholder="أدخل قيمة الدخل الشهري بالجنيه...">
+        </div>
+      </div>
+
+      <div class="form-group form-group--full"
+        style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; text-align: right;">
+        <input type="checkbox" id="head-takaful-karama" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+        <label for="head-takaful-karama" style="font-weight: 700; font-size: var(--font-size-sm); cursor: pointer;">
+          مستفيد من تكافل وكرامة
+        </label>
+      </div>
+
+      <div class="form-group" id="head-takaful-amount-group" style="display: none;">
+        <label class="form-label" for="head-takaful-amount"><span>مبلغ تكافل وكرامة (جنيه)</span></label>
+        <div class="input-container">
+          <input type="number" id="head-takaful-amount" class="form-input"
+            placeholder="أدخل مبلغ تكافل وكرامة بالجنيه...">
         </div>
       </div>
 
@@ -483,6 +499,34 @@
               max="120">
           </div>
 
+          <div class="form-group">
+            <label class="form-label" for="new-member-gender">النوع</label>
+            <div class="form-select-wrapper">
+              <select id="new-member-gender" class="form-select" data-no-other="true">
+                <option value="" selected disabled>اختر النوع...</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="new-member-religion">الديانة</label>
+            <div class="form-select-wrapper">
+              <select id="new-member-religion" class="form-select" data-no-other="true">
+                <option value="" selected disabled>اختر الديانة...</option>
+                <option value="مسلم">مسلم</option>
+                <option value="مسيحي">مسيحي</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
           <div class="form-group form-group--full"
             style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
             <input type="checkbox" id="new-member-is-student"
@@ -529,6 +573,28 @@
               placeholder="أدخل اسم الكلية أو التخصص...">
           </div>
 
+          <div class="form-group" id="non-student-qualification-group">
+            <label class="form-label" for="new-member-qualification">المؤهل الدراسي / المؤهل التعليمي</label>
+            <div class="form-select-wrapper">
+              <select id="new-member-qualification" class="form-select">
+                <option value="" selected disabled>اختر المؤهل الدراسي...</option>
+                <option value="مؤهل عالي / كلية (جامعي)">مؤهل عالي / كلية (جامعي)</option>
+                <option value="معهد عالي (4 سنوات)">معهد عالي (4 سنوات)</option>
+                <option value="معهد متوسط / فوق متوسط (سنتين)">معهد متوسط / فوق متوسط (سنتين)</option>
+                <option value="دبلوم فني / مؤهل متوسط">دبلوم فني / مؤهل متوسط</option>
+                <option value="ثانوية عامة / أزهرية">ثانوية عامة / أزهرية</option>
+                <option value="إعدادية">إعدادية</option>
+                <option value="ابتدائية">ابتدائية</option>
+                <option value="يجيد القراءة والكتابة">يجيد القراءة والكتابة</option>
+                <option value="أمي (بدون مؤهل)">أمي (بدون مؤهل)</option>
+                <option value="أخرى" data-is-other="true">أخرى</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label" for="new-member-job">الوظيفة / العمل</label>
             <input type="text" id="new-member-job" class="form-input" placeholder="الوظيفة إن وجدت...">
@@ -537,6 +603,19 @@
           <div class="form-group">
             <label class="form-label" for="new-member-income">الدخل الشهري (جنيه)</label>
             <input type="number" id="new-member-income" class="form-input" placeholder="الدخل بالجنيه...">
+          </div>
+
+          <div class="form-group form-group--full"
+            style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; text-align: right;">
+            <input type="checkbox" id="new-member-takaful-karama" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+            <label for="new-member-takaful-karama" style="font-weight: 700; font-size: var(--font-size-sm); cursor: pointer;">
+              مستفيد من تكافل وكرامة
+            </label>
+          </div>
+
+          <div class="form-group" id="new-member-takaful-amount-group" style="display: none;">
+            <label class="form-label" for="new-member-takaful-amount"><span>مبلغ تكافل وكرامة (جنيه)</span></label>
+            <input type="number" id="new-member-takaful-amount" class="form-input" placeholder="أدخل مبلغ تكافل وكرامة بالجنيه...">
           </div>
 
           <div class="form-group form-group--full">

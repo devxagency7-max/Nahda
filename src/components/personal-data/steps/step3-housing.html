@@ -11,130 +11,108 @@
         </div>
         <div>
           <h2 class="glass-card__title">3. بيانات السكن والمبنى</h2>
-          <p class="glass-card__subtitle">نوع حيازة المسكن، حالة المبنى والسقف وحجم الغرف</p>
+          <p class="glass-card__subtitle">وصف السكن، طبيعته، وحالة المبنى والسقف والأرضية والمدخل ودورات المياه</p>
         </div>
       </div>
     </div>
 
-    <div class="form-grid form-grid--3-col">
-      <div class="form-group">
-        <label class="form-label" for="housing-tenure"><span>نوع حيازة السكن</span></label>
-        <div class="form-select-wrapper">
-          <select id="housing-tenure" class="form-select">
-            <option value="" selected disabled>اختر نوع الحيازة...</option>
-            <option value="إيجار جديد">إيجار جديد</option>
-            <option value="إيجار قديم">إيجار قديم</option>
-            <option value="ملك">ملك</option>
-            <option value="استضافة">استضافة / بدون مقابل</option>
-            <option value="مفروش">مفروش</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+    <div class="form-grid form-grid--full" style="margin-bottom: 16px;">
+      <div class="form-group form-group--full">
+        <label class="form-label" for="housing-description"><span>وصف السكن</span></label>
+        <textarea id="housing-description" class="form-input" rows="3"
+          placeholder="اكتب وصف حالة السكن والملاحظات تفصيلياً هنا..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-grid form-grid--full" style="display: flex; flex-direction: column; gap: 14px;">
+      <div class="chip-field" data-field="housingType">
+        <div class="chip-field__header">
+          <span class="chip-field__label">طبيعة السكن</span>
+          <span class="badge chip-field__count">0 اختيار</span>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="building-type"><span>نوع المبنى</span></label>
-        <div class="form-select-wrapper">
-          <select id="building-type" class="form-select">
-            <option value="" selected disabled>اختر نوع المبنى...</option>
-            <option value="خرسانة مسلحة">خرسانة مسلحة</option>
-            <option value="طوب أحمر">طوب أحمر</option>
-            <option value="طوب لبن">طوب لبن / طين</option>
-            <option value="خشب / عشة">خشب / عشة</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="خاص">خاص</button>
+          <button type="button" class="chip-btn" data-value="إيجار">إيجار</button>
+          <button type="button" class="chip-btn" data-value="منزل عائلة">منزل عائلة</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
         </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="rooms-count"><span>عدد الغرف</span></label>
-        <input type="number" id="rooms-count" class="form-input" placeholder="أدخل عدد الغرف..." min="1">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="roof-condition"><span>حالة السقف</span></label>
-        <div class="form-select-wrapper">
-          <select id="roof-condition" class="form-select">
-            <option value="" selected disabled>اختر حالة السقف...</option>
-            <option value="سليم صبة">سليم (صبة خرسانية)</option>
-            <option value="خشب وعروق">خشب وعروق</option>
-            <option value="متهالك / يتسرب">متهالك / يتسرب منه الماء</option>
-            <option value="بدون سقف">بدون سقف</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+      <div class="chip-field" data-field="walls">
+        <div class="chip-field__header">
+          <span class="chip-field__label">الحوائط</span>
+          <span class="badge chip-field__count">0 اختيار</span>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="housing-floor"><span>نوع الأرضية</span></label>
-        <div class="form-select-wrapper">
-          <select id="housing-floor" class="form-select">
-            <option value="" selected disabled>اختر نوع الأرضية...</option>
-            <option value="تراب">تراب</option>
-            <option value="أسمنت">أسمنت</option>
-            <option value="بلاط">بلاط</option>
-            <option value="سيراميك">سيراميك</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="طوب احمر">طوب احمر</button>
+          <button type="button" class="chip-btn" data-value="بلوك">بلوك</button>
+          <button type="button" class="chip-btn" data-value="محارة">محارة</button>
+          <button type="button" class="chip-btn" data-value="دهان">دهان</button>
+          <button type="button" class="chip-btn" data-value="طوب لبن">طوب لبن</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
         </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="housing-entrance"><span>نوع المدخل</span></label>
-        <div class="form-select-wrapper">
-          <select id="housing-entrance" class="form-select">
-            <option value="" selected disabled>اختر نوع المدخل...</option>
-            <option value="تراب">تراب</option>
-            <option value="أسمنت">أسمنت</option>
-            <option value="بلاط">بلاط</option>
-            <option value="سيراميك">سيراميك</option>
-            <option value="رخام">رخام</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+      <div class="chip-field" data-field="roof">
+        <div class="chip-field__header">
+          <span class="chip-field__label">السقف</span>
+          <span class="badge chip-field__count">0 اختيار</span>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="bathroom-type"><span>طبيعة دورات المياه</span></label>
-        <div class="form-select-wrapper">
-          <select id="bathroom-type" class="form-select">
-            <option value="" selected disabled>اختر طبيعة الحمام...</option>
-            <option value="خاص">خاص بالأسرة</option>
-            <option value="مشترك">مشترك مع آخرين</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="بدون">بدون</button>
+          <button type="button" class="chip-btn" data-value="مسلح">مسلح</button>
+          <button type="button" class="chip-btn" data-value="خشب">خشب</button>
+          <button type="button" class="chip-btn" data-value="سعف">سعف</button>
+          <button type="button" class="chip-btn" data-value="جريد">جريد</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
         </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="bathroom-condition"><span>حالة دورات المياه</span></label>
-        <div class="form-select-wrapper">
-          <select id="bathroom-condition" class="form-select">
-            <option value="" selected disabled>اختر حالة الحمام...</option>
-            <option value="أدمي">أدمي (صالح للاستخدام)</option>
-            <option value="غير أدمي">غير أدمي (متهالك)</option>
-          </select>
-          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+      <div class="chip-field" data-field="floor">
+        <div class="chip-field__header">
+          <span class="chip-field__label">الأرضية</span>
+          <span class="badge chip-field__count">0 اختيار</span>
         </div>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="تراب">تراب</button>
+          <button type="button" class="chip-btn" data-value="أسمنت">أسمنت</button>
+          <button type="button" class="chip-btn" data-value="بلاط">بلاط</button>
+          <button type="button" class="chip-btn" data-value="سيراميك">سيراميك</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
+        </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="monthly-rent"><span>الإيجار الشهري (إن وجد)</span></label>
-        <input type="number" id="monthly-rent" class="form-input" placeholder="قيمة الإيجار بالجنيه...">
+      <div class="chip-field" data-field="entrance">
+        <div class="chip-field__header">
+          <span class="chip-field__label">المدخل</span>
+          <span class="badge chip-field__count">0 اختيار</span>
+        </div>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="تراب">تراب</button>
+          <button type="button" class="chip-btn" data-value="أسمنت">أسمنت</button>
+          <button type="button" class="chip-btn" data-value="بلاط">بلاط</button>
+          <button type="button" class="chip-btn" data-value="سيراميك">سيراميك</button>
+          <button type="button" class="chip-btn" data-value="رخام">رخام</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
+        </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
+      </div>
+
+      <div class="chip-field" data-field="bathroomCondition">
+        <div class="chip-field__header">
+          <span class="chip-field__label">حالة دورات المياه</span>
+          <span class="badge chip-field__count">0 اختيار</span>
+        </div>
+        <div class="chip-field__options">
+          <button type="button" class="chip-btn" data-value="ادمي">ادمي</button>
+          <button type="button" class="chip-btn" data-value="غير ادمي">غير ادمي</button>
+          <button type="button" class="chip-btn" data-value="أخرى">أخرى</button>
+        </div>
+        <input type="text" class="form-input chip-field__other" style="display: none;" placeholder="اكتب هنا...">
       </div>
     </div>
   </section>

@@ -6,8 +6,16 @@
 import { store } from '../state/store.js';
 import { showToast } from '../utils/toast.js';
 import { DOM } from '../utils/dom.js';
+import { canAccessView } from './permissions.js';
 
 export function switchView(viewName, saveToStorage = true) {
+  // بوابة الصلاحيات: أي محاولة لفتح شاشة خارج صلاحيات الدور الحالي — سواء من
+  // رابط، أو من عرض محفوظ في localStorage لمستخدم سابق — بترجع للوحة التحكم.
+  if (viewName !== 'login' && !canAccessView(viewName)) {
+    showToast('ليس من صلاحياتك الوصول لهذه الصفحة ⛔');
+    viewName = 'dashboard';
+  }
+
   const navBgLink = DOM.qs('#nav-bg-card-link');
   const viewLogin = DOM.qs('#view-login');
   const viewDashboard = DOM.qs('#view-dashboard');
@@ -18,6 +26,7 @@ export function switchView(viewName, saveToStorage = true) {
   const viewProfile = DOM.qs('#view-profile');
   const viewAllCases = DOM.qs('#view-all-cases');
   const viewCaseDetails = DOM.qs('#view-case-details');
+  const viewEmployees = DOM.qs('#view-employees');
   const breadcrumb = DOM.qs('.breadcrumb');
 
   if (saveToStorage) {
@@ -36,6 +45,7 @@ export function switchView(viewName, saveToStorage = true) {
   if (viewProfile) viewProfile.classList.add('page-view--hidden');
   if (viewAllCases) viewAllCases.classList.add('page-view--hidden');
   if (viewCaseDetails) viewCaseDetails.classList.add('page-view--hidden');
+  if (viewEmployees) viewEmployees.classList.add('page-view--hidden');
 
   // Toggle login screen body mode
   document.body.classList.toggle('is-login-view', viewName === 'login');
@@ -44,7 +54,7 @@ export function switchView(viewName, saveToStorage = true) {
   DOM.qsa('.sidebar-sublink').forEach(link => link.classList.remove('sidebar-sublink--active'));
   DOM.qsa('.accordion-header').forEach(hdr => hdr.classList.remove('accordion-header--active'));
 
-  document.body.classList.toggle('is-dashboard-view', viewName !== 'personal-data' && viewName !== 'bg-studio' && viewName !== 'state-mgmt' && viewName !== 'charities' && viewName !== 'profile' && viewName !== 'all-cases' && viewName !== 'case-details' && viewName !== 'login');
+  document.body.classList.toggle('is-dashboard-view', viewName !== 'personal-data' && viewName !== 'bg-studio' && viewName !== 'state-mgmt' && viewName !== 'charities' && viewName !== 'profile' && viewName !== 'all-cases' && viewName !== 'case-details' && viewName !== 'employees' && viewName !== 'login');
 
   if (viewName === 'login') {
     if (viewLogin) viewLogin.classList.remove('page-view--hidden');
@@ -59,7 +69,26 @@ export function switchView(viewName, saveToStorage = true) {
         <span class="breadcrumb__item--active">تفاصيل وفحص الحالة الشامل وقرار المراجع</span>
       `;
     }
-    if (saveToStorage) showToast('صفحة فحص داتا الحالة الشامل وقرار المراجع 📋');
+  } else if (viewName === 'employees') {
+    if (viewEmployees) viewEmployees.classList.remove('page-view--hidden');
+    if (breadcrumb) {
+      breadcrumb.innerHTML = `
+        <span>الرئيسية</span>
+        <span>/</span>
+        <span>إدارة النظام</span>
+        <span>/</span>
+        <span class="breadcrumb__item--active">إدارة الموظفين وفرق العمل</span>
+      `;
+    }
+    const navEmployeesLink = DOM.qs('#nav-employees-link');
+    if (navEmployeesLink) navEmployeesLink.classList.add('accordion-header--active');
+
+    // Close other open accordion bodies for a clean sidebar state
+    DOM.qsa('.accordion-group--open').forEach(group => {
+      group.classList.remove('accordion-group--open');
+      const body = group.querySelector('.accordion-body');
+      if (body) body.style.maxHeight = null;
+    });
   } else if (viewName === 'all-cases') {
     if (viewAllCases) viewAllCases.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -71,7 +100,6 @@ export function switchView(viewName, saveToStorage = true) {
         <span class="breadcrumb__item--active">سجل الحالات والملفات</span>
       `;
     }
-    if (saveToStorage) showToast('صفحة سجل ودفتر جميع الحالات والملفات 📁');
   } else if (viewName === 'profile') {
     if (viewProfile) viewProfile.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -83,7 +111,6 @@ export function switchView(viewName, saveToStorage = true) {
         <span class="breadcrumb__item--active">تعديل الملف الشخصي</span>
       `;
     }
-    if (saveToStorage) showToast('صفحة تعديل الملف الشخصي 👤');
   } else if (viewName === 'bg-studio') {
     if (viewBgStudio) viewBgStudio.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -104,8 +131,6 @@ export function switchView(viewName, saveToStorage = true) {
       const body = bgGroup.querySelector('.accordion-body');
       if (body) body.style.maxHeight = (body.scrollHeight + 40) + 'px';
     }
-
-    if (saveToStorage) showToast('تم فتح استوديو تخصيص الخلفية 🎨');
   } else if (viewName === 'charities') {
     if (viewCharities) viewCharities.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -126,8 +151,6 @@ export function switchView(viewName, saveToStorage = true) {
       const body = dataGroup.querySelector('.accordion-body');
       if (body) body.style.maxHeight = (body.scrollHeight + 40) + 'px';
     }
-
-    if (saveToStorage) showToast('صفحة إدارة الجمعيات 🏛️');
   } else if (viewName === 'state-mgmt') {
     if (viewStateMgmt) viewStateMgmt.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -148,8 +171,6 @@ export function switchView(viewName, saveToStorage = true) {
       const body = dataGroup.querySelector('.accordion-body');
       if (body) body.style.maxHeight = (body.scrollHeight + 40) + 'px';
     }
-
-    if (saveToStorage) showToast('صفحة إدارة بيانات الحالة (الـ Dropdowns) ⚙️');
   } else if (viewName === 'personal-data') {
     if (viewPersonalData) viewPersonalData.classList.remove('page-view--hidden');
     if (breadcrumb) {
@@ -170,8 +191,6 @@ export function switchView(viewName, saveToStorage = true) {
       const body = dataGroup.querySelector('.accordion-body');
       if (body) body.style.maxHeight = (body.scrollHeight + 40) + 'px';
     }
-
-    if (saveToStorage) showToast('صفحة البيانات الأساسية المعاملة 📋');
   } else {
     // Default: Dashboard / الرئيسية
     if (viewDashboard) viewDashboard.classList.remove('page-view--hidden');
@@ -182,7 +201,6 @@ export function switchView(viewName, saveToStorage = true) {
     }
     const navDashLink = DOM.qs('#nav-dashboard-link');
     if (navDashLink) navDashLink.classList.add('accordion-header--active');
-    if (saveToStorage) showToast('الصفحة الرئيسية 🏠');
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });

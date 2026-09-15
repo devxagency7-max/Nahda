@@ -23,6 +23,8 @@ export function initFamilyMembersManager() {
   // National ID & Age fields for family member
   const memberIdInput = DOM.qs('#new-member-id');
   const memberAgeInput = DOM.qs('#new-member-age');
+  const memberGenderSelect = DOM.qs('#new-member-gender');
+  const memberReligionSelect = DOM.qs('#new-member-religion');
 
   if (memberIdInput) {
     memberIdInput.addEventListener('input', () => {
@@ -34,6 +36,7 @@ export function initFamilyMembersManager() {
         const result = parseEgyptianNationalId(cleanVal);
         if (result.valid) {
           if (memberAgeInput) memberAgeInput.value = result.age;
+          if (memberGenderSelect) memberGenderSelect.value = result.genderAr;
           memberIdInput.style.borderColor = '#0d9488';
         } else {
           memberIdInput.style.borderColor = '#ef4444';
@@ -53,8 +56,21 @@ export function initFamilyMembersManager() {
   const universityGroup   = DOM.qs('#student-uni-group');
   const universityInput   = DOM.qs('#new-member-university');
   const studentFieldsWrapper = studentStageGroup;
+  const qualificationGroup = DOM.qs('#non-student-qualification-group');
+  const qualificationSelect = DOM.qs('#new-member-qualification');
+
+  // تكافل وكرامة للفرد التابع
+  const takafulCheckbox = DOM.qs('#new-member-takaful-karama');
+  const takafulAmountGroup = DOM.qs('#new-member-takaful-amount-group');
+  const takafulAmountInput = DOM.qs('#new-member-takaful-amount');
 
   let editingCard = null;
+  // مكان أصلي فاضي (placeholder) بيحجز موضع الفورم في الـ DOM لما يتقفل —
+  // عشان نقدر نرجّعه لمكانه الطبيعي فوق القائمة بعد الإلغاء/الحفظ.
+  const formPlaceholder = document.createComment('member-form-placeholder');
+  if (inlineForm && inlineForm.parentNode) {
+    inlineForm.parentNode.insertBefore(formPlaceholder, inlineForm);
+  }
 
   function updateMembersCount() {
     if (!membersList || !countBadge) return;
@@ -145,6 +161,8 @@ export function initFamilyMembersManager() {
     if (jobInput) jobInput.value = '';
     if (incomeInput) incomeInput.value = '';
     if (notesInput) notesInput.value = '';
+    if (memberGenderSelect) memberGenderSelect.value = '';
+    if (memberReligionSelect) memberReligionSelect.value = '';
     if (isStudentCheckbox) isStudentCheckbox.checked = false;
     if (studentFieldsWrapper) studentFieldsWrapper.style.display = 'none';
     if (stageSelect) stageSelect.value = '';
@@ -152,6 +170,11 @@ export function initFamilyMembersManager() {
     if (gradeSelect) gradeSelect.innerHTML = '<option value="" selected disabled>-- اختر المرحلة التعليمية أولاً لتحديد الصف --</option>';
     if (universityGroup) universityGroup.style.display = 'none';
     if (universityInput) universityInput.value = '';
+    if (qualificationGroup) qualificationGroup.style.display = 'block';
+    if (qualificationSelect) qualificationSelect.value = '';
+    if (takafulCheckbox) takafulCheckbox.checked = false;
+    if (takafulAmountGroup) takafulAmountGroup.style.display = 'none';
+    if (takafulAmountInput) takafulAmountInput.value = '';
   }
 
   function fillFormFromCard(card) {
@@ -171,17 +194,27 @@ export function initFamilyMembersManager() {
     if (jobInput) jobInput.value = d.job === 'غير محدد' ? '' : (d.job || '');
     if (incomeInput) incomeInput.value = d.income || '';
     if (notesInput) notesInput.value = d.notes || '';
+    if (memberGenderSelect) memberGenderSelect.value = d.gender || '';
+    if (memberReligionSelect) memberReligionSelect.value = d.religion || '';
 
     const isStudent = d.isStudent === 'true';
     if (isStudentCheckbox) isStudentCheckbox.checked = isStudent;
     if (studentFieldsWrapper) studentFieldsWrapper.style.display = isStudent ? 'block' : 'none';
     if (gradeGroup) gradeGroup.style.display = isStudent ? 'block' : 'none';
+    if (qualificationGroup) qualificationGroup.style.display = isStudent ? 'none' : 'block';
 
     if (isStudent) {
       const stage = d.stage || '';
       if (stageSelect) stageSelect.value = stage;
       handleStageChange(stage, d.grade || '', d.university || '');
+    } else if (qualificationSelect) {
+      qualificationSelect.value = d.qualification || '';
     }
+
+    const isTakaful = d.takafulKarama === 'true';
+    if (takafulCheckbox) takafulCheckbox.checked = isTakaful;
+    if (takafulAmountGroup) takafulAmountGroup.style.display = isTakaful ? 'block' : 'none';
+    if (takafulAmountInput) takafulAmountInput.value = isTakaful ? (d.takafulKaramaAmount || '') : '';
   }
 
   function openModal(card) {
@@ -200,8 +233,19 @@ export function initFamilyMembersManager() {
     }
 
     if (inlineForm) {
+      // نقل الفورم نفسه لمكان الكارت المطلوب تعديله بالظبط — الكارت الصغير
+      // بيتخبى مؤقتًا ومكانه يفتح الفورم الكامل (Accordion)، من غير scroll
+      // ومن غير ظهور فورم في مكان تاني منفصل. لو "إضافة" (مفيش كارت)، الفورم
+      // بيفضل في مكانه الأصلي فوق القائمة.
+      if (editingCard && editingCard.parentNode) {
+        editingCard.style.display = 'none';
+        editingCard.parentNode.insertBefore(inlineForm, editingCard);
+      } else if (formPlaceholder.parentNode) {
+        formPlaceholder.parentNode.insertBefore(inlineForm, formPlaceholder);
+      }
+
       inlineForm.style.display = 'block';
-      inlineForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      inlineForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       const firstInput = DOM.qs('#new-member-name');
       if (firstInput) firstInput.focus();
     }
@@ -210,6 +254,14 @@ export function initFamilyMembersManager() {
   function closeModal() {
     if (inlineForm) {
       inlineForm.style.display = 'none';
+      // رجّع الفورم لمكانه الأصلي فوق القائمة، ورجّع الكارت الصغير يبان تاني
+      // (لو كان مخبّى بسبب التعديل).
+      if (formPlaceholder.parentNode) {
+        formPlaceholder.parentNode.insertBefore(inlineForm, formPlaceholder);
+      }
+      if (editingCard) {
+        editingCard.style.display = '';
+      }
     }
     editingCard = null;
   }
@@ -235,7 +287,10 @@ export function initFamilyMembersManager() {
       if (studentStageGroup) studentStageGroup.style.display = isChecked ? 'block' : 'none';
       if (gradeGroup) gradeGroup.style.display = isChecked ? 'block' : 'none';
 
+      if (qualificationGroup) qualificationGroup.style.display = isChecked ? 'none' : 'block';
+
       if (isChecked) {
+        if (qualificationSelect) qualificationSelect.value = '';
         handleStageChange(stageSelect ? stageSelect.value : '');
       } else {
         if (stageSelect) stageSelect.value = '';
@@ -252,7 +307,15 @@ export function initFamilyMembersManager() {
     });
   }
 
-  function computeEduDisplay(isStudent, stage, grade, university) {
+  if (takafulCheckbox) {
+    takafulCheckbox.addEventListener('change', () => {
+      const isChecked = takafulCheckbox.checked;
+      if (takafulAmountGroup) takafulAmountGroup.style.display = isChecked ? 'block' : 'none';
+      if (!isChecked && takafulAmountInput) takafulAmountInput.value = '';
+    });
+  }
+
+  function computeEduDisplay(isStudent, stage, grade, university, qualification) {
     const studentFlag = isStudent === true || isStudent === 'true';
     if (studentFlag) {
       if (stage === 'جامعي / كلية' || stage === 'كلية / جامعة') {
@@ -265,17 +328,19 @@ export function initFamilyMembersManager() {
         return '🎓 طالب ملتحق بالتعليم';
       }
     }
-    return 'غير طالب';
+    return qualification ? `غير طالب — ${qualification}` : 'غير طالب';
   }
 
   function applyMemberDataToCard(card, data) {
-    const { name, relation, idNum, age, job, income, notes, isStudent, stage, grade, university, eduDisplay } = data;
-    const finalEduDisplay = eduDisplay || computeEduDisplay(isStudent, stage, grade, university);
+    const { name, relation, idNum, age, gender, religion, job, income, notes, isStudent, stage, grade, university, qualification, takafulKarama, takafulKaramaAmount, eduDisplay } = data;
+    const finalEduDisplay = eduDisplay || computeEduDisplay(isStudent, stage, grade, university, qualification);
 
     card.dataset.name = name;
     card.dataset.relation = relation;
     card.dataset.idNum = idNum || '';
     card.dataset.age = age || '';
+    card.dataset.gender = gender || '';
+    card.dataset.religion = religion || '';
     card.dataset.job = job || 'غير محدد';
     card.dataset.income = income || '';
     card.dataset.notes = notes || '';
@@ -283,6 +348,9 @@ export function initFamilyMembersManager() {
     card.dataset.stage = stage || '';
     card.dataset.grade = grade || '';
     card.dataset.university = university || '';
+    card.dataset.qualification = qualification || '';
+    card.dataset.takafulKarama = String(takafulKarama);
+    card.dataset.takafulKaramaAmount = takafulKaramaAmount || '';
     card.dataset.eduDisplay = finalEduDisplay;
 
     const nameParts = name.split(' ');
@@ -298,19 +366,27 @@ export function initFamilyMembersManager() {
             <h4 class="member-card__name" style="font-size: 15px; font-weight: 800; color: #000; margin: 0;">${DOM.escapeHTML(name)}</h4>
             <span class="badge badge--primary" style="font-size: 11px;">${DOM.escapeHTML(relation)}</span>
             ${age ? `<span class="badge badge--secondary" style="font-size: 11px;">السن: ${DOM.escapeHTML(age)} سنة</span>` : ''}
+            ${gender ? `<span class="badge badge--secondary" style="font-size: 11px;">${DOM.escapeHTML(gender)}</span>` : ''}
+            ${religion ? `<span class="badge badge--secondary" style="font-size: 11px;">${DOM.escapeHTML(religion)}</span>` : ''}
           </div>
 
           <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--text-secondary);">
             ${idNum ? `<div>🪪 <strong>الرقم القومي:</strong> <span style="font-family: monospace; font-weight: 700;">${DOM.escapeHTML(idNum)}</span></div>` : ''}
             <div>🏫 <strong>التعليم:</strong> ${DOM.escapeHTML(finalEduDisplay)}</div>
             <div>💼 <strong>الوظيفة / العمل:</strong> ${DOM.escapeHTML(job || 'غير محدد')} ${income ? ` • 💵 <strong>الدخل:</strong> <span style="color: #059669; font-weight: 800;">${DOM.escapeHTML(income)} جنيه/شهرياً</span>` : ''}</div>
+            ${takafulKarama === true || takafulKarama === 'true' ? `<div>🤝 <strong>تكافل وكرامة:</strong> <span style="color: #7c3aed; font-weight: 800;">مستفيد${takafulKaramaAmount ? ` — ${DOM.escapeHTML(takafulKaramaAmount)} جنيه` : ''}</span></div>` : ''}
             ${notes ? `<div style="color: #2563eb; font-weight: 700; margin-top: 2px;">📝 <strong>ملاحظات:</strong> ${DOM.escapeHTML(notes)}</div>` : ''}
           </div>
         </div>
       </div>
-      <button class="btn btn--ghost btn--sm btn-delete-member" title="حذف الفرد" type="button" style="padding: 6px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-      </button>
+      <div style="display: flex; align-items: center; gap: 2px; flex-shrink: 0;">
+        <button class="btn btn--ghost btn--sm btn-edit-member" title="تعديل بيانات الفرد" type="button" style="padding: 6px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        </button>
+        <button class="btn btn--ghost btn--sm btn-delete-member" title="حذف الفرد" type="button" style="padding: 6px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+      </div>
     `;
   }
 
@@ -328,6 +404,8 @@ export function initFamilyMembersManager() {
       const relation = relationInput ? relationInput.value : 'فرد أسرة';
       const idNum = idInput ? idInput.value.trim() : '';
       const age = ageInput ? ageInput.value.trim() : '';
+      const gender = memberGenderSelect ? memberGenderSelect.value : '';
+      const religion = memberReligionSelect ? memberReligionSelect.value : '';
       const job = jobInput ? jobInput.value.trim() : 'غير محدد';
       const income = incomeInput ? incomeInput.value.trim() : '';
       const notes = notesInput ? notesInput.value.trim() : '';
@@ -336,7 +414,11 @@ export function initFamilyMembersManager() {
       const stage = isStudent && stageSelect ? stageSelect.value : '';
       const grade = isStudent && gradeSelect ? gradeSelect.value : '';
       const university = isStudent && universityInput ? universityInput.value.trim() : '';
-      let eduDisplay = computeEduDisplay(isStudent, stage, grade, university);
+      const qualification = !isStudent && qualificationSelect ? qualificationSelect.value : '';
+      let eduDisplay = computeEduDisplay(isStudent, stage, grade, university, qualification);
+
+      const takafulKarama = takafulCheckbox ? takafulCheckbox.checked : false;
+      const takafulKaramaAmount = takafulKarama && takafulAmountInput ? takafulAmountInput.value.trim() : '';
 
       if (!name) {
         showToast('يرجى إدخال اسم الفرد الرباعي');
@@ -356,7 +438,7 @@ export function initFamilyMembersManager() {
         return;
       }
 
-      const memberData = { name, relation, idNum, age, job, income, notes, isStudent, stage, grade, university, eduDisplay };
+      const memberData = { name, relation, idNum, age, gender, religion, job, income, notes, isStudent, stage, grade, university, qualification, takafulKarama, takafulKaramaAmount, eduDisplay };
 
       if (editingCard) {
         applyMemberDataToCard(editingCard, memberData);
